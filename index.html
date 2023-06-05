@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集え！アニマルジャンゴゥ！！</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script>
+      AFRAME.registerComponent('grow-tree', {
+
+          init: function() {
+            console.log(this.el)
+            this.el.addEventListener('mouseup', function (event) {
+              // TODO: うまくイベントが発火しない。何故
+              console.log(event)
+            });
+          }
+        });
+    </script>
+</head>
+<body>
+    <a-scene>
+      <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: .raycastable"></a-entity>
+            
+      <a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" color="#4685CB"></a-plane>
+      <a-sphere position="20 20 -50" radius="1.25" color="#FF7733"></a-sphere>
+      <a-sky color="#6CB9F5"></a-sky>
+      
+      <a-camera position="0 2 4"  look-controls></a-camera>
+    </a-scene>
+    <template id="ground-template">
+      <a-entity grow-tree>
+        <a-box class="ground" class="raycastable" position="0 0 0" rotation="0 0 0" color="#446503"></a-box>
+      </a-entity>
+    </template>
+    <template id="tree-template">
+      <a-entity class="tree">
+        <a-cylinder position="0 0 0" radius="0.2" height="2" color="#7E5435"></a-cylinder>
+        <a-cone position="0 2 0" radius="0.5" height="2.5" color="#23AC38"></a-cone>
+      </a-entity>
+    </template>
+    <script>
+        const scene = document.querySelector('a-scene');
+        const SIZE = 21;
+        const HALF_SIZE = parseInt(SIZE / 2);
+        
+        const groundTemplate = document.querySelector('#ground-template');
+        let grounds = [];
+
+        // 一度設置する
+        for(d = 0; d < SIZE; d++) {
+          for(w = 0; w < SIZE; w++) { 
+            const g = groundTemplate.content.cloneNode(true);
+            g.querySelector("a-entity").setAttribute("position", `${w - HALF_SIZE} 0 ${d - HALF_SIZE}`);
+            scene.appendChild(g);
+          }
+        }
+
+        
+    </script>
+</body>
+</html>
